@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en"><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+   <meta name="description" content="
+The prime factors of $13195$ are $5, 7, 13$ and $29$.
+What is the largest prime factor of the number $600851475143$?
+
+code
+Parameters
+
+$n = 600851475143$: integer to find largest prime factor of
+
+The largest prime factor of a number is at most its square root. By dividing the number by its smallest prime factor, we can remove the smaller prime factors until only the largest is left. The bound on the largest prime factor can also be tightened based on the result of the division.">  
+
+  <title>
+    
+      [Project Euler] Day 3: Largest Prime Factor
+    
+  </title>
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/" />
+  
+  
+  
+  <link rel="stylesheet" href="//localhost:1313/css/main.18e297f9c7b534b566a0a070712181cc69b4f1155e1b8d1fe541304605c4f6ab7d7460a557a004bf67fd09787aef348cf619f6dd8d310362898a41b1465ddd4d.css" integrity="sha512-GOKX&#43;ce1NLVmoKBwcSGBzGm08RVeG40f5UEwRgXE9qt9dGClV6AEv2f9CXh67zSM9hn23Y0xA2KJikGxRl3dTQ==" />
+   <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$','$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+
+  window.addEventListener('load', (event) => {
+      document.querySelectorAll("mjx-container").forEach(function(x){
+        x.parentElement.classList += 'has-jax'})
+    });
+
+</script>
+<script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+ 
+</head>
+<body a="auto">
+        <main class="page-content" aria-label="Content">
+            <div class="w">
+                <div class="post-meta">
+                    <a href="/">..</a>
+
+                    <p>
+                        <time datetime="2024-12-16 00:00:02 &#43;0800 &#43;0800">
+                            2024-12-16
+                        </time>
+                    </p>
+                </div>
+
+<article>
+    <h1>[Project Euler] Day 3: Largest Prime Factor</h1>
+
+    
+
+    <blockquote>
+<p>The prime factors of $13195$ are $5, 7, 13$ and $29$.
+What is the largest prime factor of the number $600851475143$?</p>
+</blockquote>
+<p><a href="https://github.com/ravidosa/euler/blob/main/p3.py">code</a></p>
+<h3 id="parameters">Parameters</h3>
+<ul>
+<li>$n = 600851475143$: integer to find largest prime factor of</li>
+</ul>
+<p>The largest <a href="https://en.wikipedia.org/wiki/Integer_factorization">prime factor</a> of a number is at most its square root. By dividing the number by its smallest prime factor, we can remove the smaller prime factors until only the largest is left. The bound on the largest prime factor can also be tightened based on the result of the division.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span>ans = <span style="color:#f60">600851475143</span>
+</span></span><span style="display:flex;"><span>p = <span style="color:#f60">2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f00">while</span> p &lt;= math.sqrt(ans):
+</span></span><span style="display:flex;"><span>    <span style="color:#f00">if</span> ans % p == <span style="color:#f60">0</span>:
+</span></span><span style="display:flex;"><span>        ans //= p
+</span></span><span style="display:flex;"><span>    <span style="color:#f00">else</span>:
+</span></span><span style="display:flex;"><span>        p += <span style="color:#f60">1</span>
+</span></span></code></pre></div><p>Generalizing to arbitrary $n$:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span>ans = N
+</span></span><span style="display:flex;"><span>p = <span style="color:#f60">2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f00">while</span> p &lt;= math.sqrt(ans):
+</span></span><span style="display:flex;"><span>    <span style="color:#f00">if</span> ans % p == <span style="color:#f60">0</span>:
+</span></span><span style="display:flex;"><span>        ans //= p
+</span></span><span style="display:flex;"><span>    <span style="color:#f00">else</span>:
+</span></span><span style="display:flex;"><span>        p += <span style="color:#f60">1</span>
+</span></span></code></pre></div><p>This would have a time complexity of $O(\sqrt{n})$, since in the worst case ($n$ is prime), it checks up to $\sqrt{n}$.</p>
+
+</article>
+
+            </div>
+        </main>
+    </body></html>

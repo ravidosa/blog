@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en"><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+   <meta name="description" content="
+If we list all the natural numbers below $10$ that are multiples of $3$ or $5$, we get $3, 5, 6$ and $9$. The sum of these multiples is $23$.
+Find the sum of all the multiples of $3$ or $5$ below $1000$.
+
+code
+Parameters
+
+$n = 1000$: upper bound on integers being checked
+$m = 2$: number of factors to check divisibility for
+$k = 5$: upper bound on factors
+
+Naively, we can take advantage of Python&rsquo;s list comprehension to implement a solution. Iterating over every integer between $1$ and $1000$, we can check if the integer is divisible by $3$ or $5$.">  
+
+  <title>
+    
+      [Project Euler] Day 1: Multiples of 3 and 5
+    
+  </title>
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/" />
+  
+  
+  
+  <link rel="stylesheet" href="//localhost:1313/css/main.18e297f9c7b534b566a0a070712181cc69b4f1155e1b8d1fe541304605c4f6ab7d7460a557a004bf67fd09787aef348cf619f6dd8d310362898a41b1465ddd4d.css" integrity="sha512-GOKX&#43;ce1NLVmoKBwcSGBzGm08RVeG40f5UEwRgXE9qt9dGClV6AEv2f9CXh67zSM9hn23Y0xA2KJikGxRl3dTQ==" />
+   <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$','$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+
+  window.addEventListener('load', (event) => {
+      document.querySelectorAll("mjx-container").forEach(function(x){
+        x.parentElement.classList += 'has-jax'})
+    });
+
+</script>
+<script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+ 
+</head>
+<body a="auto">
+        <main class="page-content" aria-label="Content">
+            <div class="w">
+                <div class="post-meta">
+                    <a href="/">..</a>
+
+                    <p>
+                        <time datetime="2024-12-16 00:00:00 &#43;0800 &#43;0800">
+                            2024-12-16
+                        </time>
+                    </p>
+                </div>
+
+<article>
+    <h1>[Project Euler] Day 1: Multiples of 3 and 5</h1>
+
+    
+
+    <blockquote>
+<p>If we list all the natural numbers below $10$ that are multiples of $3$ or $5$, we get $3, 5, 6$ and $9$. The sum of these multiples is $23$.
+Find the sum of all the multiples of $3$ or $5$ below $1000$.</p>
+</blockquote>
+<p><a href="https://github.com/ravidosa/euler/blob/main/p1.py">code</a></p>
+<h3 id="parameters">Parameters</h3>
+<ul>
+<li>$n = 1000$: upper bound on integers being checked</li>
+<li>$m = 2$: number of factors to check divisibility for</li>
+<li>$k = 5$: upper bound on factors</li>
+</ul>
+<p>Naively, we can take advantage of Python&rsquo;s list comprehension to implement a solution. Iterating over every integer between $1$ and $1000$, we can check if the integer is divisible by $3$ or $5$.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span>ans = sum([i <span style="color:#f00">for</span> i in range(<span style="color:#f60">1</span>, <span style="color:#f60">1000</span>) <span style="color:#f00">if</span> (i % <span style="color:#f60">3</span> == <span style="color:#f60">0</span> or i % <span style="color:#f60">5</span> == <span style="color:#f60">0</span>)])
+</span></span></code></pre></div><p>Generalizing to arbitrary $n$, $m$, and $k$:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span>ans = sum([i <span style="color:#f00">for</span> i in range(<span style="color:#f60">1</span>, N) <span style="color:#f00">if</span> any([i % factor == <span style="color:#f60">0</span> <span style="color:#f00">for</span> factor in div_by])])
+</span></span></code></pre></div><p>This would have a time complexity of $O(nm)$, since we check if every integer is divisible by every factor.</p>
+<p>We can improve on this by using the <a href="https://en.wikipedia.org/wiki/Inclusion%E2%80%93exclusion_principle">inclusion-exclusion principle</a>. For finite sets $A$ and $B$:
+$$ |A \cup B| = |A| + |B| - |A \cap B|$$
+Here, $A$ and $B$ are the sets of integers divisible by $3$ and $5$, respectively. We can find the sum of all integers divisible $3$ or $5$ by finding the sum of all integers divisible by $3$ and by $5$, then subtracting the sum of all integers divisible by their least common multiple, $15$. To efficiently find the sum of all such integers, we can use the following properties relating to the $p$th term and $p$th partial sum of an <a href="https://en.wikipedia.org/wiki/Arithmetic_progression">arithmetic sequence</a>:
+$$
+\begin{align}
+a_p &amp;= a_1 + (p - 1) \cdot d \\\\
+S_p &amp; = (a_1 + a_p) \cdot \frac{p}{2} \\\
+\end{align}
+$$
+where $a_1$ is the first term and $d$ is the difference between successive terms. Here, $d = a_1$, so the sum simplifies to:
+$$
+\begin{align}
+S_p &amp;= (a_1 + (a_1 + (p - 1) \cdot a_1)) \cdot \frac{p}{2} \\\
+&amp;= \frac{p(p + 1)a_1}{2}
+\end{align}
+$$
+The number of terms in the sequence can be found by taking the floor of the smallest integer below the upper bound divided by the factor. Using this to find the sums of the integers divisible by $3, 5,$ and $15$:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span>ans = (<span style="color:#f60">999</span> // <span style="color:#f60">3</span>) * (<span style="color:#f60">999</span> // <span style="color:#f60">3</span> + <span style="color:#f60">1</span>) * <span style="color:#f60">3</span> / <span style="color:#f60">2</span> + (<span style="color:#f60">999</span> // <span style="color:#f60">5</span>) * (<span style="color:#f60">999</span> // <span style="color:#f60">5</span> + <span style="color:#f60">1</span>) * <span style="color:#f60">5</span> / <span style="color:#f60">2</span> - (<span style="color:#f60">999</span> // <span style="color:#f60">15</span>) * (<span style="color:#f60">999</span> // <span style="color:#f60">15</span> + <span style="color:#f60">1</span>) * <span style="color:#f60">15</span> / <span style="color:#f60">2</span>
+</span></span></code></pre></div><p>Generalizing to arbitrary $n$, $m$, and $k$:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span>ans = <span style="color:#f60">0</span>
+</span></span><span style="display:flex;"><span><span style="color:#f00">for</span> intersection in range(<span style="color:#f60">1</span>, len(div_by) + <span style="color:#f60">1</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#f00">for</span> subset in itertools.combinations(div_by, intersection):
+</span></span><span style="display:flex;"><span>        a1 = math.lcm(*subset)
+</span></span><span style="display:flex;"><span>        n = (N - <span style="color:#f60">1</span>) // a1
+</span></span><span style="display:flex;"><span>        ans += (-<span style="color:#f60">1</span>) ** (intersection + <span style="color:#f60">1</span>) * ((n + <span style="color:#f60">1</span>) * a1 * n // <span style="color:#f60">2</span>)
+</span></span></code></pre></div><p>This would have a time complexity of $O(2^m\log k)$, since there are $2^m - 1$ nonempty subsets of the factors and finding the least common multiple has a time complexity of $O(\log k)$.</p>
+
+</article>
+
+            </div>
+        </main>
+    </body></html>
